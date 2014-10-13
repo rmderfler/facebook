@@ -6,7 +6,8 @@
   <thead>
     <tr>
       <th>Name </th>
-      <th> Recipient </th>
+      <th class="more-padding-on-right">Email </th>
+      <th class="more-padding-on-right"> Recipient </th>
       <th> Message</th>
       <th colspan="3"></th>
     </tr>
@@ -17,6 +18,7 @@
     <% @messages.each do |message| %>
       <tr>
         <td class="more-padding-on-right"><strong><%= message.name %></strong></td>
+        <td class="more-padding-on-right"><%= message.sender_email %></td>
         <td class="more-padding-on-right"><%= message.recipient %></td>
         <td class="more-padding-on-right"><%= message.message %></td>
         <div class="meta">
