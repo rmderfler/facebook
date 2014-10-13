@@ -1,29 +1,36 @@
-<h1>Listing messages</h1>
+<div class="page-header">
+  <h1>Listing messages</h1>
+</div>
 
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Recipient</th>
-      <th>Message</th>
+      <th>Name </th>
+      <th> Recipient </th>
+      <th> Message</th>
       <th colspan="3"></th>
     </tr>
   </thead>
 
+  <div class="message">
   <tbody>
     <% @messages.each do |message| %>
       <tr>
-        <td><%= message.name %></td>
-        <td><%= message.recipient %></td>
-        <td><%= message.message %></td>
-        <td><%= link_to 'Show', message %></td>
-        <td><%= link_to 'Edit', edit_message_path(message) %></td>
-        <td><%= link_to 'Destroy', message, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="more-padding-on-right"><strong><%= message.name %></strong></td>
+        <td class="more-padding-on-right"><%= message.recipient %></td>
+        <td class="more-padding-on-right"><%= message.message %></td>
+        <div class="meta">
+        <td class="more-padding-on-right"><%= link_to time_ago_in_words(message.created_at) + " ago" %> | </td></div>
+      
+        <td class="admin" class="more-padding-on-right" ><%= link_to 'Edit', edit_message_path(message) %> | </td>
+        <td class="admin"><%= link_to 'Destroy', message, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </span>
       </tr>
     <% end %>
   </tbody>
+</div>
 </table>
 
 <br>
 
-<%= link_to 'New Message', new_message_path %>
+<%= button_to 'New Message', new_message_path, :method => "get" %>
