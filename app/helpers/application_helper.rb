@@ -3,7 +3,7 @@ module ApplicationHelper
   def flash_class(type)
     case type
     when 'alert'
-      "alert-error"
+      "alert-warning"
     when 'notice'
       "alert-success"
     else
