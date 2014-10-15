@@ -16,6 +16,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'puma'
 gem 'devise'
 gem 'simple_form'
+gem 'debugger'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

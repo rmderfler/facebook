@@ -1,38 +1,28 @@
 <div class="page-header">
-  <h1>Listing messages</h1>
+  <h1>All of the messages</h1>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name </th>
-      <th class="more-padding-on-right">Email </th>
-      <th class="more-padding-on-right"> Recipient </th>
-      <th> Message</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<%= link_to "Post a New message", new_message_path, class: "btn btn-success" %>
 
-  <div class="message">
-  <tbody>
-    <% @messages.each do |message| %>
-      <tr>
-        <td class="more-padding-on-right"><strong><%= message.name %></strong></td>
-        <td class="more-padding-on-right"><%= message.sender_email %></td>
-        <td class="more-padding-on-right"><%= message.recipient %></td>
-        <td class="more-padding-on-right"><%= message.message %></td>
-        <div class="meta">
-        <td class="more-padding-on-right"><%= link_to time_ago_in_words(message.created_at) + " ago" %> | </td></div>
-      
-        <td class="admin" class="more-padding-on-right" ><%= link_to 'Edit', edit_message_path(message) %> | </td>
-        <td class="admin"><%= link_to 'Destroy', message, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </span>
-      </tr>
-    <% end %>
-  </tbody>
+<% @messages.each do |message| %>
+<div class="message">
+  <div class="row">
+    <div class="span1">
+
+      <%=  image_tag message.user.gravatar_url %>
+
+    </div>
+    <div class="span6">
+      <strong><%= message.name %></strong>
+      <p><%= message.message %></p>
+      <div class="meta">
+        <%= link_to time_ago_in_words(message.created_at) + " ago", message %> 
+        <span class="admin">
+          | <%= link_to "Edit", edit_message_path(message) %> | 
+          <%= link_to "Delete", message, method: :delete, data: { confirm: "Are you sure your want to delete this message?"} %>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>
-</table>
-
-<br>
-
-<%= button_to 'New Message', new_message_path, :method => "get" %>
+<% end %>
