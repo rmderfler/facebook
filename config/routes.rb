@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   resources :messages
   get 'list' => 'messages#index', as: :list
   root to: 'messages#index'
+
+  get '/:id', to: 'profiles#show'
  
 
 end
