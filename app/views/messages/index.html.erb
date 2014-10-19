@@ -2,7 +2,7 @@
   <h1>All of the messages</h1>
 </div>
 
-<%= link_to "Post a New message", new_message_path, class: "btn btn-success" %>
+<%= link_to "Post a New message", new_message_path, class: "btn btn-success" %><p><br></p>
 
 <% @messages.each do |message| %>
 <div class="message">
@@ -14,13 +14,14 @@
     </div>
     <div class="span6">
       <strong><%= message.name %></strong>
-      <p><%= message.message %></p>
+      <%= message.message %>
       <div class="meta">
         <%= link_to time_ago_in_words(message.created_at) + " ago", message %> 
         <span class="admin">
           | <%= link_to "Edit", edit_message_path(message) %> | 
           <%= link_to "Delete", message, method: :delete, data: { confirm: "Are you sure your want to delete this message?"} %>
         </span>
+        <p><br></p>
       </div>
     </div>
   </div>
