@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  # def to_param
+  #   profile_name
+  # end
+
   def gravatar_url
     stripped_email = email.strip
     downcased_email = stripped_email.downcase

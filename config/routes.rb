@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'profiles/show'
 
+  
+
   devise_for :users
 
   devise_scope :user do 
@@ -9,11 +11,13 @@ Rails.application.routes.draw do
     get 'logout' => 'devise/sessions#destroy', as: :logout
   end
 
+  resources :user_friendships
+
   resources :messages
   get 'list' => 'messages#index', as: :list
   root to: 'messages#index'
 
-  get '/:id', to: 'profiles#show'
+  get '/:id', to: 'profiles#show', as: 'profile'
  
 
 end
