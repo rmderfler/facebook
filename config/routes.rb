@@ -11,7 +11,11 @@ Rails.application.routes.draw do
     get 'logout' => 'devise/sessions#destroy', as: :logout
   end
 
-  resources :user_friendships
+  resources :user_friendships do 
+    member do 
+      put :accept
+    end
+  end
 
   resources :messages
   get 'list' => 'messages#index', as: :list

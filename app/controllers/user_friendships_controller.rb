@@ -12,15 +12,27 @@ class UserFriendshipsController < ApplicationController
     render file: 'public/404', status: :not_found
   end
 
+  def index
+  end
+
+  def accept
+    @user_friendship = current_user.user_friendships.find(params[:id])
+    if @user_friendship.accept!
+      flash[:success] = "You are now friends with #{@user_friendship.friend.name}"
+    else
+      flash[:error] = "That friendship could not be accepted"
+    end
+    redirect_to user_friendships_path
+  end
+
   def create
     if params[:user_friendship]
-      #debugger
       @friend = User.find(user_friendship_params.values).first
-      @user_friendship = current_user.user_friendships.new(friend: @friend)
-      if @user_friendship.save
-        flash[:notice] = "Friendship created."
+      @user_friendship = UserFriendship.request(current_user, @friend)
+      if @user_friendship.new_record?
+        flash[:alert] = "There was a problem creating that friendship request."
       else
-        flash[:alert] = "There was a problem."
+        flash[:notice] = "Friendship request sent."
       end
       redirect_to profile_path(@friend)
     else
@@ -29,12 +41,16 @@ class UserFriendshipsController < ApplicationController
     end
   end
 
+  def edit
+    @friend = User.find(user_friendship_params.values).first
+  end
+
   def friend_params
       params.require(:friend).permit(:friend_id)
   end
 
   def user_friendship_params
-      params.require(:user_friendship).permit(:friend_id)
+      params.require(:user_friendship).permit(:friend_id, :state)
   end
 
 
