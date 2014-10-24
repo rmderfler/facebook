@@ -13,6 +13,7 @@ class UserFriendshipsController < ApplicationController
   end
 
   def index
+    @user_friendships = current_user.user_friendships.includes(:friend).all
   end
 
   def accept
@@ -42,7 +43,8 @@ class UserFriendshipsController < ApplicationController
   end
 
   def edit
-    @friend = User.find(user_friendship_params.values).first
+    @user_friendship = current_user.user_friendships.find(params[:id])
+    @friend = @user_friendship.friend
   end
 
   def friend_params
@@ -50,7 +52,7 @@ class UserFriendshipsController < ApplicationController
   end
 
   def user_friendship_params
-      params.require(:user_friendship).permit(:friend_id, :state)
+      params.require(:user_friendship).permit(:friend_id, :state, :user_friendship)
   end
 
 
