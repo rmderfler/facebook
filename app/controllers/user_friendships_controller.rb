@@ -47,6 +47,16 @@ class UserFriendshipsController < ApplicationController
     @friend = @user_friendship.friend
   end
 
+  def destroy
+    @user_friendship = current_user.user_friendships.find(params[:id])
+    if @user_friendship.destroy
+      flash[:success] = "Friendship destroyed."
+    else
+      flash[:error] = "There was a problem destroying that friendship."
+    end
+    redirect_to user_friendships_path
+  end
+
   def friend_params
       params.require(:friend).permit(:friend_id)
   end

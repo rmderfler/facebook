@@ -2,6 +2,10 @@ class UserFriendship < ActiveRecord::Base
   belongs_to :user
   belongs_to :friend, class_name: 'User', foreign_key: 'friend_id'
 
+  validates :friend_id, uniqueness: { scope: :user_id }
+
+  after_destroy :destroy_mutual_friendship!
+
   state_machine :state, initial: :pending do 
     after_transition on: :accept, do: [:send_acceptance_email, :accept_mutual_friendship!]
 
@@ -33,6 +37,10 @@ class UserFriendship < ActiveRecord::Base
 
   def mutual_friendship
     self.class.where({user_id: friend_id, friend_id: user_id}).first
+  end
+
+  def destroy_mutual_friendship!
+    mutual_friendship.delete if mutual_friendship
   end
 
   def accept_mutual_friendship!
