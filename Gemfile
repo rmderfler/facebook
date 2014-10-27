@@ -19,6 +19,7 @@ gem 'simple_form'
 gem 'debugger'
 gem 'state_machine', :git => 'https://github.com/seuros/state_machine.git'
 gem 'draper'
+gem 'js-routes'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks

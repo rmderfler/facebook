@@ -1,5 +1,6 @@
 class UserFriendshipsController < ApplicationController
   before_filter :authenticate_user!
+  respond_to :html, :json
   def new 
     if params[:friend_id]
       @friend = User.find(params[:friend_id])
@@ -30,12 +31,21 @@ class UserFriendshipsController < ApplicationController
     if params[:user_friendship]
       @friend = User.find(user_friendship_params.values).first
       @user_friendship = UserFriendship.request(current_user, @friend)
-      if @user_friendship.new_record?
-        flash[:alert] = "There was a problem creating that friendship request."
-      else
-        flash[:notice] = "Friendship request sent."
+      respond_to do |format|
+        if @user_friendship.new_record?
+          format.html do
+            flash[:alert] = "There was a problem creating that friendship request."
+            redirect_to profile_path(@friend)
+          end
+          format.json {render json: @user_friendship.to_json, status: :precondition_failed }
+        else
+          format.html do
+            flash[:notice] = "Friendship request sent."
+            redirect_to profile_path(@friend)
+          end
+          format.json { render json: @user_friendship.to_json }
+        end
       end
-      redirect_to profile_path(@friend)
     else
       flash[:alert] = "Friend is required"
       redirect_to root_path
