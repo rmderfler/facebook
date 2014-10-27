@@ -15,6 +15,7 @@ class UserFriendshipsController < ApplicationController
 
   def index
     @user_friendships = current_user.user_friendships.includes(:friend).all
+    respond_with @user_friendships
   end
 
   def accept
@@ -58,6 +59,7 @@ class UserFriendshipsController < ApplicationController
       #binding.pry
       @user_friendship = current_user.user_friendships.where(friend_id: @friend.id).first.decorate
     else
+      #binding.pry
       @user_friendship = UserFriendship.find(params[:id])
     end
     #@friend = UserFriendship.where(name: params[:user_id]).first
