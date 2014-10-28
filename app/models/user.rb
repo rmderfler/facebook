@@ -42,6 +42,10 @@ class User < ActiveRecord::Base
 
     "http://gravatar.com/avatar/#{hash}"
   end
+
+  def has_blocked?(other_user)
+    blocked_friends.include?(other_user)
+  end
   
 end
 

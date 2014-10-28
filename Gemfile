@@ -18,7 +18,7 @@ gem 'devise'
 gem 'simple_form'
 gem 'debugger'
 gem 'state_machine', :git => 'https://github.com/seuros/state_machine.git'
-gem 'draper'
+gem 'draper', '~> 1.0'
 gem 'js-routes'
 gem 'pry'
 # Use jquery as the JavaScript library

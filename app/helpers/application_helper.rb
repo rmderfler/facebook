@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def can_display_status?(message)
+    signed_in? && !current_user.has_blocked?(message.user) || !signed_in?
+  end
+
   def flash_class(type)
     case type
     when 'alert'

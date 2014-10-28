@@ -1,6 +1,7 @@
 class UserFriendshipsController < ApplicationController
   before_filter :authenticate_user!
   respond_to :html, :json
+  
   def new 
     if params[:friend_id]
       @friend = User.find(params[:friend_id])
@@ -14,16 +15,26 @@ class UserFriendshipsController < ApplicationController
   end
 
   def index
-    @user_friendships = current_user.user_friendships.includes(:friend).all
+    @user_friendships = UserFriendshipDecorator.decorate_collection(friendship_association.all)
     respond_with @user_friendships
   end
 
   def accept
     @user_friendship = current_user.user_friendships.find(params[:id])
     if @user_friendship.accept!
-      flash[:success] = "You are now friends with #{@user_friendship.friend.name}"
+      flash[:notice] = "You are now friends with #{@user_friendship.friend.name}"
     else
-      flash[:error] = "That friendship could not be accepted"
+      flash[:alert] = "That friendship could not be accepted"
+    end
+    redirect_to user_friendships_path
+  end
+
+  def block
+    @user_friendship = current_user.user_friendships.find(params[:id])
+    if @user_friendship.block!
+      flash[:notice] = "You have blocked #{@user_friendship.friend.name}."
+    else
+      flash[:alert] = "That friendship could not be blocked."
     end
     redirect_to user_friendships_path
   end
@@ -70,9 +81,9 @@ class UserFriendshipsController < ApplicationController
   def destroy
     @user_friendship = current_user.user_friendships.find(params[:id])
     if @user_friendship.destroy
-      flash[:success] = "Friendship destroyed."
+      flash[:notice] = "Friendship destroyed."
     else
-      flash[:error] = "There was a problem destroying that friendship."
+      flash[:alert] = "There was a problem destroying that friendship."
     end
     redirect_to user_friendships_path
   end
@@ -85,5 +96,22 @@ class UserFriendshipsController < ApplicationController
       params.require(:user_friendship).permit(:friend_id, :state, :user_friendship)
   end
 
+   private
+  def friendship_association
+    case params[:list]
+
+    when nil
+      current_user.user_friendships
+    when 'blocked'
+      #binding.pry
+      current_user.user_friendships.where("state"=>"blocked")
+    when 'pending'
+      current_user.user_friendships.where("state"=>"pending")
+    when 'accepted'
+      current_user.user_friendships.where("state"=>"accepted")
+    when 'requested'
+      current_user.user_friendships.where("state"=>"requested")
+    end
+  end
 
 end
