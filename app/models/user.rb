@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
+  
   has_many :messages
   has_many :user_friendships
   has_many :friends, -> { where(user_friendships: { state: "accepted"}) }, through: :user_friendships
@@ -14,8 +15,19 @@ class User < ActiveRecord::Base
                  source: :friend
 
   has_many :pending_friends, through: :pending_user_friendships, source: :friend                                    
+  
+  has_many :requested_user_friendships, -> { where(user_friendships: { state: "requested"}) }, through: :user_friendships
+
+  has_many :requested_friends, through: :requested_user_friendships, source: :friend
+  
+  has_many :blocked_user_friendships, -> { where(user_friendships: { state: "blocked"}) }, through: :user_friendships
+
+  has_many :blocked_friends, through: :blocked_user_friendships, source: :friend
+  
+  has_many :accepted_friends, through: :accepted_user_friendships, source: :friend
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
