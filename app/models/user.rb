@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_many :messages
   has_many :user_friendships
   has_many :friends, -> { where(user_friendships: { state: "accepted"}) }, through: :user_friendships
-  
+  has_many :activities
   # has_many :pending_user_friendships, class_name: "UserFriendship",
   #                                     foreign_key: :user_id,
   #                                     conditions: { state: 'pending'}
@@ -45,6 +45,14 @@ class User < ActiveRecord::Base
 
   def has_blocked?(other_user)
     blocked_friends.include?(other_user)
+  end
+
+  def create_activity(item, action)
+    activity = activities.new
+    activity.targetable = item
+    activity.action = action
+    activity.save
+    activity
   end
   
 end

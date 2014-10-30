@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :activities, only: [:index]
+
 as :user do
     get '/register', to: 'devise/registrations#new',via: :get, as: :register
     get '/login', to: 'devise/sessions#new', via: :get, as: :login

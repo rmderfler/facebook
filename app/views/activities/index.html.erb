@@ -1,0 +1,16 @@
+
+  <h1>Activity Feed</h1>
+
+<% @activities.each do |activity| %>
+  <div class="media">
+   
+    <div class="media-body">
+      <h4 class="media-heading"><%= link_to image_tag(activity.user.gravatar_url) %> <%= activity.user.name %></h4>
+      <small><%= activity.created_at %></small>
+      <%= render partial: "activities/#{activity.targetable_type.underscore}/#{activity.action}", 
+            locals: { activity: activity } %>
+      <br />
+    </div> 
+  </div>
+  <hr />
+  <% end %>

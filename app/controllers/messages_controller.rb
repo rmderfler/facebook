@@ -16,6 +16,7 @@ class MessagesController < ApplicationController
   # GET /messages/new
   def new
     @message = Message.new
+    #@message.build_document
   end
 
   # GET /messages/1/edit
@@ -29,6 +30,7 @@ class MessagesController < ApplicationController
     @message.user_id = current_user.id
     respond_to do |format|
       if @message.save
+        current_user.create_activity(@message, 'created')
         format.html { redirect_to @message, notice: 'Message was successfully created.' }
         format.json { render :show, status: :created, location: @message }
       else
@@ -43,6 +45,7 @@ class MessagesController < ApplicationController
   def update
     respond_to do |format|
       if @message.user_id == current_user.id && @message.update(message_params)
+        #current_user.create_activity(@message, 'updated')
         format.html { redirect_to @message, notice: 'Message was successfully updated.' }
         format.json { render :show, status: :ok, location: @message }
       else
@@ -77,6 +80,6 @@ class MessagesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def message_params
-      params.require(:message).permit(:name, :recipient, :message, :sender_email, :user_id)
+      params.require(:message).permit(:name, :recipient, :message, :sender_email, :user_id, :document_attributes)
     end
 end

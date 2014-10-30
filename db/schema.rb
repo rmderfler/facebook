@@ -11,10 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141021032204) do
+ActiveRecord::Schema.define(version: 20141030031918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: true do |t|
+    t.integer  "user_id"
+    t.string   "action"
+    t.integer  "targetable_id"
+    t.string   "targetable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activities", ["targetable_id", "targetable_type"], name: "index_activities_on_targetable_id_and_targetable_type", using: :btree
+  add_index "activities", ["user_id"], name: "index_activities_on_user_id", using: :btree
+
+  create_table "documents", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+  end
+
+  add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
 
   create_table "messages", force: true do |t|
     t.string   "name"
@@ -24,6 +48,8 @@ ActiveRecord::Schema.define(version: 20141021032204) do
     t.datetime "updated_at"
     t.string   "sender_email"
     t.integer  "user_id"
+    t.integer  "document_id"
+    t.binary   "document_attributes"
   end
 
   add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree

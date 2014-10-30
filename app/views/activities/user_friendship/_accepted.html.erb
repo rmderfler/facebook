@@ -1,0 +1,7 @@
+Became friends with 
+<% if activity.targetable %>
+  <%= activity.targetable.friend.name %>. <br />
+  <%= link_to image_tag(activity.user.gravatar_url) %> <%=activity.targetable.friend %>
+<% else %>
+  a user.
+<% end %>

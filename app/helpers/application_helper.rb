@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def can_display_status?(message)
+  def can_display_message?(message)
     signed_in? && !current_user.has_blocked?(message.user) || !signed_in?
   end
 
